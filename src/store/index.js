@@ -23,11 +23,15 @@ export default new Vuex.Store({
           done: false,
         },
       ],
+      snackbar: {
+        show: false,
+        text: '',
+      },
     };
   },
   getters: {},
   mutations: {
-    addTask(state,payload) {
+    addTask(state, payload) {
       let newTask = {
         id: Date.now(),
         title: payload,
@@ -44,7 +48,43 @@ export default new Vuex.Store({
       let id = payload;
       state.tasks = state.tasks.filter((task) => task.id !== id);
     },
+    showSnackbar(state, payload) {
+      state.snackbar.show = true;
+      state.snackbar.text = payload;
+    },
+    hideSnackbar(state) {
+      state.snackbar.show = false;
+    },
   },
-  actions: {},
+  actions: {
+    addTask(context, payload) {
+      let timeout = 0;
+      context.commit('addTask', payload);
+      if (context.state.snackbar.show) {
+        context.commit('hideSnackbar');
+        timeout = 500;
+      }
+      setTimeout(() => {
+        context.commit('showSnackbar', 'Task added!');
+      }, timeout);
+    },
+    doneTask(context, payload) {
+      context.commit('doneTask', payload);
+    },
+    deleteTask(context, payload) {
+      let timeout = 0;
+      context.commit('deleteTask', payload);
+      if (context.state.snackbar.show) {
+        context.commit('hideSnackbar');
+        timeout = 500;
+      }
+      setTimeout(() => {
+        context.commit('showSnackbar', 'Task deleted!');
+      }, timeout);
+    },
+    hideSnackbar(context) {
+      context.commit('hideSnackbar');
+    },
+  },
   modules: {},
 });
