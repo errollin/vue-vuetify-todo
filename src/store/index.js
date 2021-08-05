@@ -66,6 +66,11 @@ export default new Vuex.Store({
       }
       setTimeout(() => {
         context.commit('showSnackbar', 'Task added!');
+        if (context.state.snackbar.show) {
+          setTimeout(() => {
+            context.commit('hideSnackbar');
+          }, 1500);
+        }
       }, timeout);
     },
     doneTask(context, payload) {
@@ -79,7 +84,12 @@ export default new Vuex.Store({
         timeout = 500;
       }
       setTimeout(() => {
-        context.commit('showSnackbar', 'Task deleted!');
+        context.commit('showSnackbar', 'Task added!');
+        if (context.state.snackbar.show) {
+          setTimeout(() => {
+            context.commit('hideSnackbar');
+          }, 1500);
+        }
       }, timeout);
     },
     hideSnackbar(context) {
